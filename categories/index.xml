@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on DevOps in Higher Ed</title>
+    <link>https://laupow.github.io/categories/</link>
+    <description>Recent content in Categories on DevOps in Higher Ed</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://laupow.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Ansible</title>
+      <link>https://laupow.github.io/categories/ansible/</link>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/categories/ansible/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bash</title>
+      <link>https://laupow.github.io/categories/bash/</link>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/categories/bash/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Inventory</title>
+      <link>https://laupow.github.io/categories/inventory/</link>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/categories/inventory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Keys</title>
+      <link>https://laupow.github.io/categories/keys/</link>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/categories/keys/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ssh</title>
+      <link>https://laupow.github.io/categories/ssh/</link>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/categories/ssh/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

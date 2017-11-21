@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bash on DevOps in Higher Ed</title>
+    <link>https://laupow.github.io/categories/bash/</link>
+    <description>Recent content in Bash on DevOps in Higher Ed</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://laupow.github.io/categories/bash/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Automating Ansible SSH key setup</title>
+      <link>https://laupow.github.io/2017/10/automating-ansible-ssh-key-setup/</link>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/2017/10/automating-ansible-ssh-key-setup/</guid>
+      <description>A small frustration with Ansible is the initial setup to procure ssh access to the remote hosts. Ansible is a great tool to automate all the things. However, it assumes you already have ssh access to the remote hosts. Say your operations team member writes an Ansible deploy playbook to share with the team. It works for the operations team member locally, but other users won&amp;rsquo;t be able to run the playbook until they also have ssh access to the remote hosts.</description>
+    </item>
+    
+  </channel>
+</rss>

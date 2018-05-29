@@ -6,7 +6,7 @@
     <description>Recent content in Tags on DevOps in Higher Ed</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Aug 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 25 Oct 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://laupow.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,36 @@
     <item>
       <title>Ansible</title>
       <link>https://laupow.github.io/tags/ansible/</link>
-      <pubDate>Wed, 09 Aug 2017 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>https://laupow.github.io/tags/ansible/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Aws</title>
+      <link>https://laupow.github.io/tags/aws/</link>
+      <pubDate>Thu, 24 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bash</title>
+      <link>https://laupow.github.io/tags/bash/</link>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/bash/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Deployment</title>
+      <link>https://laupow.github.io/tags/deployment/</link>
+      <pubDate>Thu, 24 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/deployment/</guid>
       <description></description>
     </item>
     
@@ -30,11 +57,20 @@
     </item>
     
     <item>
-      <title>Playbooks</title>
-      <link>https://laupow.github.io/tags/playbooks/</link>
-      <pubDate>Wed, 09 Aug 2017 00:00:00 +0000</pubDate>
+      <title>Ssh</title>
+      <link>https://laupow.github.io/tags/ssh/</link>
+      <pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://laupow.github.io/tags/playbooks/</guid>
+      <guid>https://laupow.github.io/tags/ssh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tls</title>
+      <link>https://laupow.github.io/tags/tls/</link>
+      <pubDate>Thu, 24 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/tls/</guid>
       <description></description>
     </item>
     

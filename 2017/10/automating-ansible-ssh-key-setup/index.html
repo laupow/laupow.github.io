@@ -456,7 +456,7 @@ HOSTS=`ansible all -i $1 --list-hosts --vault-password-file=$MY_VAULT_PW_FILE | 
 
 # Add each host key to known hosts
 while read -r line; do
-    ssh-keyscan $line &gt;&gt; $MY_KNOWN_HOSTS
+    ssh-keyscan -t ssh-rsa  $line &gt;&gt; $MY_KNOWN_HOSTS
 done &lt;&lt;&lt; &quot;$HOSTS&quot;
 
 # Remove duplicates added from the keyscan
@@ -485,12 +485,19 @@ rm -f $TMP_PLAYBOOK
 
 <p>The script may be used as <code>install-ssh-keys.sh wordpress/production-inventory</code></p>
 
+<p>UPDATE: Since the original post date, I&rsquo;ve since modified the parameters for <code>ssh-keyscan</code> above to include the <code>-t ssh-rsa</code> param.
+By downloading all keys and sorting the known_hosts file, sometimes the wrong key was used first and would halt script executions.
+I ended up clearing out my known_hosts file, applying the <code>-t ssh-rsa</code> limitation. Since the change this helper
+script has been, well, helpful.</p>
+
   </div>
 
   <div id=links>
     
       <a class="basic-alignment left" href="https://laupow.github.io/2017/08/ansible-playbook-strategies/">&laquo; Ansible Playbook Strategies</a>
     
+    
+      <a class="basic-alignment left" href="https://laupow.github.io/2018/05/tls-misconfiguration-how-cloudfront-noticed-first/">TLS misconfiguration: how CloudFront noticed first &raquo;</a>
     
   </div>
 </section>

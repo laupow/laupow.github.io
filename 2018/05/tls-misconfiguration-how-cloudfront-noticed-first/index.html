@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <base href="https://laupow.github.io/">
+    
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
+
+    <link rel="icon" type="image/png" href="/favicon_16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon_32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon_128x128.png" sizes="128x128">
+
+    <title>
+      
+      
+         TLS misconfiguration: how CloudFront noticed first 
+      
+    </title>
+    <link rel="canonical" href="https://laupow.github.io/2018/05/tls-misconfiguration-how-cloudfront-noticed-first/">
+
+    <style>
+  * {
+    border:0;
+    font:inherit;
+    font-size:100%;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
+    color: black;
+    text-decoration-skip: ink;
+  }
+
+  body {
+    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-size:17px;
+    line-height:160%;
+    color:#1d1313;
+    max-width:700px;
+    margin:auto;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  a img {
+    border:none;
+  }
+
+  img {
+    margin: 10px auto 10px auto;
+    max-width: 100%;
+    display: block;
+  }
+
+  .left-justify {
+    float: left;
+  }
+
+  .right-justify {
+    float:right;
+  }
+
+  pre, code {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #f7f7f7;
+  }
+
+  code {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+    word-wrap: normal;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+  }
+
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+
+  pre code {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+
+  pre code::before,
+  pre code::after {
+    content: normal;
+  }
+
+  em,q,em,dfn {
+    font-style:italic;
+  }
+
+  .sans,html .gist .gist-file .gist-meta {
+    font-family:"Open Sans","Myriad Pro",Myriad,sans-serif;
+  }
+
+  .mono,pre,code,tt,p code,li code {
+    font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+  }
+
+  .heading,.serif,h1,h2,h3 {
+    font-family:"Old Standard TT",serif;
+  }
+
+  strong {
+    font-weight:600;
+  }
+
+  q:before {
+    content:"\201C";
+  }
+
+  q:after {
+    content:"\201D";
+  }
+
+  del,s {
+    text-decoration:line-through;
+  }
+
+  blockquote {
+    font-family:"Old Standard TT",serif;
+    text-align:center;
+    padding:50px;
+  }
+
+  blockquote p {
+    display:inline-block;
+    font-style:italic;
+  }
+
+  blockquote:before,blockquote:after {
+    font-family:"Old Standard TT",serif;
+    content:'\201C';
+    font-size:35px;
+    color:#403c3b;
+  }
+
+  blockquote:after {
+    content:'\201D';
+  }
+
+  hr {
+    width:40%;
+    height: 1px;
+    background:#403c3b;
+    margin: 25px auto;
+  }
+
+  h1 {
+    font-size:35px;
+  }
+
+  h2 {
+    font-size:28px;
+  }
+
+  h3 {
+    font-size:22px;
+    margin-top:18px;
+  }
+
+  h1 a,h2 a,h3 a {
+    text-decoration:none;
+  }
+
+  h1,h2 {
+    margin-top:28px;
+  }
+
+  #sub-header, time {
+    color:#403c3b;
+    font-size:13px;
+  }
+
+  #sub-header {
+    margin: 0 4px;
+  }
+
+  #nav h1 a {
+    font-size:35px;
+    color:#1d1313;
+    line-height:120%;
+  }
+
+  .posts_listing a,#nav a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-left: 5px;
+  }
+
+  ul li {
+    list-style-type: none;
+  }
+  ul li:before {
+    content:"\00BB \0020";
+  }
+
+  #nav ul li:before, .posts_listing li:before {
+    content:'';
+    margin-right:0;
+  }
+
+  #content {
+    text-align:left;
+    width:100%;
+    font-size:15px;
+    padding:60px 0 80px;
+  }
+
+  #content h1,#content h2 {
+    margin-bottom:5px;
+  }
+
+  #content h2 {
+    font-size:25px;
+  }
+
+  #content .entry-content {
+    margin-top:15px;
+  }
+
+  #content time {
+    margin-left:3px;
+  }
+
+  #content h1 {
+    font-size:30px;
+  }
+
+  .highlight {
+    margin: 10px 0;
+  }
+
+  .posts_listing {
+    margin:0 0 50px;
+  }
+
+  .posts_listing li {
+    margin:0 0 25px 15px;
+  }
+
+  .posts_listing li a:hover,#nav a:hover {
+    text-decoration: underline;
+  }
+
+  #nav {
+    text-align:center;
+    position:static;
+    margin-top:60px;
+  }
+
+  #nav ul {
+    display: table;
+    margin: 8px auto 0 auto;
+  }
+
+  #nav li {
+    list-style-type:none;
+    display:table-cell;
+    font-size:15px;
+    padding: 0 20px;
+  }
+
+  #links {
+    margin: 50px 0 0 0;
+  }
+
+  #links :nth-child(2) {
+    float:right;
+  }
+
+  #not-found {
+    text-align: center;
+  }
+
+  #not-found a {
+    font-family:"Old Standard TT",serif;
+    font-size: 200px;
+    text-decoration: none;
+    display: inline-block;
+    padding-top: 225px;
+  }
+
+  @media (max-width: 750px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    #nav h1 a {
+      font-size:28px;
+    }
+
+    #nav li {
+      font-size:13px;
+      padding: 0 15px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:50px;
+      font-size:14px;
+    }
+
+    #content h1 {
+      font-size:25px;
+    }
+
+    #content h2 {
+      font-size:22px;
+    }
+
+    .posts_listing li div {
+      font-size:12px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    #nav h1 a {
+      font-size:22px;
+    }
+
+    #nav li {
+      font-size:12px;
+      padding: 0 10px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:20px;
+      font-size:12px;
+    }
+
+    #content h1 {
+      font-size:20px;
+    }
+
+    #content h2 {
+      font-size:18px;
+    }
+
+    .posts_listing li div{
+      font-size:12px;
+    }
+  }
+</style>
+
+
+    
+  </head>
+
+  <body>
+    <section id=nav>
+      <h1><a href="/">DevOps in Higher Ed</a></h1>
+      <ul>
+        
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </section>
+
+
+<section id=content>
+  <h1> TLS misconfiguration: how CloudFront noticed first </h1>
+
+  <div id=sub-header>
+    May 2018 · 5 minute read
+  </div>
+
+  <div class="entry-content">
+    <p>One day after a routine deployment our CloudFront URLs broke. The website was completely useless.
+Requests to CloudFront, mostly for CSS and JS, were returning an HTTP 502 Bad Gateway error.
+Thanks to Kubernetes, we quickly rolled back the botched deployment.
+But how did a deployment break our CloudFront distribution?
+</p>
+
+<h2 id="what-changed-after-the-deploy">What changed after the deploy?</h2>
+
+<p>During our build process, we generate a unique build number added to all CloudFront URLs (e.g. <code>/scripts/assets.min.js?build=2018.05.25.1</code>).
+Putting the build number in the CloudFront query string forces CloudFront to fetch new resources after deploying code.
+The CloudFront distribution used our web server as the primary origin:</p>
+
+<p><strong>Origin URL</strong><br />
+<code>https://www.example.com/scripts/assets.min.js</code></p>
+
+<p><strong>CloudFront URL, before deploy</strong><br />
+<code>https://dk0ls632913f.cloudfront.net/scripts/assets.min.js?build=2018.05.25.1</code></p>
+
+<p><strong>CloudFront URL, after deploy</strong><br />
+<code>https://dk0ls632913f.cloudfront.net/scripts/assets.min.js?build=2018.05.25.2</code></p>
+
+<p>Usually, CloudFront isn&rsquo;t a problem following a deploy, and all the URLs above would continue to work.
+This time, however, the cached objects in CloudFront masked a problem we didn&rsquo;t know we had.</p>
+
+<h2 id="the-cloudfront-error">The CloudFront Error</h2>
+
+<p>We didn&rsquo;t change any settings on our distribution, so why can&rsquo;t CloudFront connect to our origin servers?
+There was a little nugget of hope in the error
+message: a <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/http-502-bad-gateway.html">link to a AWS documentation page</a>
+with common reasons why CloudFront returns 502 Bad Gateway.</p>
+
+<p>Between the deployments, we had also done a Google Kubernetes Engine upgrade. An unintended side-effect likely reverted the TLS certificates to an
+older version of the certificates. The swap may have been related to the resolution of a <a href="https://github.com/kubernetes/ingress-gce/issues/46">known TLS issue</a>
+which limited the number of certificates propagated through Google Cloud resources.</p>
+
+<p>Initially, I didn&rsquo;t think the certificates were an issue. I naïvely opened a web browser, pointed it at our server,
+and the pages loaded over TLS. Our certificate was still valid, but according to CloudFront, a misconfiguration existed.
+Just in case, I tried to load the same URL over the using another tool and immediately saw a <code>SSLError: CERTIFICATE_VERIFY_FAILED</code>.</p>
+
+<p>Now I could somewhat reproduce the issue CloudFront identified.
+I ran a couple more tests against the server to examine the TLS configuration.</p>
+
+<p>First, <a href="https://ssllabs.com/">SSL Labs</a> and next <a href="https://github.com/mozilla/cipherscan">ciperscan</a>.</p>
+
+<p>Ciperscan said the certificate was untrusted but didn&rsquo;t provide details. The SSL Labs results were interesting because that report identified a
+couple of issues that matched issues described in the AWS documentation. Notably: <em>the intermediate certificates were missing</em>.</p>
+
+<p>(Web browsers must mitigate missing intermediate certificates. I won&rsquo;t try to describe the mechanism here, but the website worked
+for my browser and I suspect most other users, too.)</p>
+
+<p>I went back to the AWS documentation to focused on intermediate certificates. In the <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/http-502-bad-gateway.html#ssl-certificate-expired">middle of the documentation</a>
+there is a critical statement:</p>
+
+<p><strong>Note: If the full chain of certificates, including the intermediate certificate, is not present, CloudFront drops the TCP connection.</strong></p>
+
+<p>It&rsquo;s a match. Our TLS configuration didn&rsquo;t include the intermediate certificates, and therefore CloudFront didn&rsquo;t load the new assets
+for the recent code deploy.</p>
+
+<p>This missing certificates probably existed for almost 24 hours before the deployment issue. But since the cached resources
+continued to work normally, CloudFront masked the underlying problem.</p>
+
+<p>The fix was simple: update our TLS certificates to include the sender&rsquo;s certificate first, followed by all intermediate certificates, in the order they are signed. CloudFront could connect to our origin servers once again.</p>
+
+<h2 id="lessons-learned">Lessons Learned</h2>
+
+<ul>
+<li>Web Browsers should not be the only test to validate a TLS configuration.</li>
+</ul>
+
+<p>Using a tool like <a href="https://ssllabs.com/">SSL Labs</a> to analyze your certificates and server configuration is essential.
+Even dumping the raw output with <code>openssl s_client –connect domainname:443</code> provides valuable information such as certificate presence and order.</p>
+
+<ul>
+<li>Don&rsquo;t ignore configuration warnings even if web browsers work OK.</li>
+</ul>
+
+<p>I&rsquo;ve seen the message &ldquo;Wrong Order&rdquo; warning for the certificates on other servers, but didn&rsquo;t have my head
+fully wrapped around why it mattered. I understand the bigger picture now: other software
+implementing SSL/TLS per the spec may not tolerate configuration issues, like certificates being out of order.
+CloudFront&rsquo;s TLS policy is more strict than a typical web browser, and therefore, the secure connections to our origin failed.</p>
+
+<h2 id="viewing-the-certificates-from-your-server">Viewing the certificates from your server</h2>
+
+<p>OpenSSL can get the certificate information from a server.</p>
+
+<p>Client supports SNI<br />
+<code>openssl s_client –connect domainname:443 –servername domainname</code></p>
+
+<p>Client doesn&rsquo;t support SNI<br />
+<code>openssl s_client –connect domainname:443</code></p>
+
+<p>If the client doesn&rsquo;t support SNI, typically you receive the certificate of the primary/default web server as
+configured at <code>domainname:443</code>.</p>
+
+<h2 id="note-about-root-certificates">Note about root certificates</h2>
+
+<p>If you use the <code>openssl s_client -connect</code> you might see a note about a self-signed certificate:</p>
+
+<pre><code>depth=3 C = SE, O = AddTrust AB, OU = AddTrust External TTP Network, CN = AddTrust External CA Root
+verify error:num=19:self signed certificate in certificate chain
+verify return:0
+</code></pre>
+
+<p>The root certificate issued by a CA is a self-signed certificate.
+This <a href="https://stackoverflow.com/a/4106224/841203">Stack Overflow post</a> describes the condition in more detail.</p>
+
+<p>Our certificate provider adds the root CA certificate to its set, by default.
+So we leave it intact for simplicity and consistency across deployments.
+According to the TLS 1.2 spec, adding the root certificate is acceptable:</p>
+
+<pre><code>certificate_list
+...Because certificate validation requires that root keys be distributed
+independently, the self-signed certificate that specifies the root certificate
+authority MAY be omitted from the chain, under the assumption that the
+remote end must already possess it in order to validate it in any case.
+</code></pre>
+  </div>
+
+  <div id=links>
+    
+      <a class="basic-alignment left" href="https://laupow.github.io/2017/10/automating-ansible-ssh-key-setup/">&laquo; Automating Ansible SSH key setup</a>
+    
+    
+  </div>
+</section>
+
+  
+</body>
+</html>
+
+
+

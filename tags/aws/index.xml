@@ -20,8 +20,7 @@
       <description>&lt;p&gt;One day after a routine deployment our CloudFront URLs broke. The website was completely useless.
 Requests to CloudFront, mostly for CSS and JS, were returning an HTTP 502 Bad Gateway error.
 Thanks to Kubernetes, we quickly rolled back the botched deployment.
-But how did a deployment break our CloudFront distribution?
-&lt;/p&gt;</description>
+But how did a deployment break our CloudFront distribution?&lt;/p&gt;</description>
     </item>
     
   </channel>

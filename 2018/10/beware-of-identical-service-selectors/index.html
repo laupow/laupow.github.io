@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-	<meta name="generator" content="Hugo 0.54.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="HandheldFriendly" content="True">
@@ -20,10 +19,10 @@
     <title>
       
       
-         DevOps in Higher Ed 
+         Beware of Identical Service Selectors 
       
     </title>
-    <link rel="canonical" href="https://laupow.github.io/">
+    <link rel="canonical" href="https://laupow.github.io/2018/10/beware-of-identical-service-selectors/">
 
     <style>
   * {
@@ -388,8 +387,6 @@
 
 
     
-      <link href="https://laupow.github.io/index.xml" rel="alternate" type="application/rss+xml" title="DevOps in Higher Ed" />
-    
   </head>
 
   <body>
@@ -404,48 +401,60 @@
 
 
 <section id=content>
-  <ul class=posts_listing>
+  <h1> Beware of Identical Service Selectors </h1>
+
+  <div id=sub-header>
+    October 2018 · 1 minute read
+  </div>
+
+  <div class="entry-content">
     
-      <li>
-        <h2><a href="https://laupow.github.io/2019/05/gke-v1.13-upgrade/">GKE v1.13 Upgrade</a></h2>
-        <div id=date>
-          <time>May 2019</time>
-        </div>
-      </li>
+
+<p>Label selectors on your Kubernetes Services should generally be unique.
+The Kubernetes <a href="https://kubernetes.io/docs/concepts/services-networking/service/">Service</a> docs
+outline occasions when selectors might not apply.
+But if you use selectors, you want each Service to select a unique backend.
+Otherwise, your traffic may not route properly</p>
+
+<h3 id="case-study">Case Study</h3>
+
+<p>50% of routine HTTP requests failed to reach the target backend inside of a Kubernetes cluster.</p>
+
+<p>HTTP requests for resources like<code>http://integration-tachyon/images/headshot.jpg</code> never arrived at the backend
+for <code>integration-tachyon</code>.</p>
+
+<p>When an HTTP request <em>did</em> make it to a backend, the container responded correctly.</p>
+
+<p>After fruitless efforts focusing on the application, we dumped the Kubernetes Service configuration for the cluster.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get service -o wide
+NAME                 TYPE       CLUSTER-IP     PORT(S)       AGE  SELECTOR
+integration-graphql  ClusterIP  10.35.245.134  4000/TCP      1d   app=graphql,env=test
+integration-tachyon  NodePort   10.35.255.87   80:32169/TCP  1d   app=tachyon,env=test
+wptest-graphql       ClusterIP  10.35.253.123  4000/TCP      1d   app=graphql,env=test
+wptest-tachyon       NodePort   10.35.246.140  80:31311/TCP  1d   app=tachyon,env=test</code></pre></div>
+<p>The problem is apparent in the <code>SELECTOR</code> column: we had different services with identical selectors.</p>
+
+<p>There were two pairs of identical selectors.
+Hence, 50% of the HTTP requests did not make it to the correct backend.
+Half of the traffic arrived at another instance of the application (our logs verified this).</p>
+
+<p>The fix was to update our labels and selectors to be sufficiently unique.</p>
+
+  </div>
+
+  <div id=links>
     
-      <li>
-        <h2><a href="https://laupow.github.io/2018/10/beware-of-identical-service-selectors/">Beware of Identical Service Selectors</a></h2>
-        <div id=date>
-          <time>October 2018</time>
-        </div>
-      </li>
+      <a class="basic-alignment left" href="https://laupow.github.io/2018/05/tls-misconfiguration-how-cloudfront-noticed-first/">&laquo; TLS misconfiguration: how CloudFront noticed first</a>
     
-      <li>
-        <h2><a href="https://laupow.github.io/2018/05/tls-misconfiguration-how-cloudfront-noticed-first/">TLS misconfiguration: how CloudFront noticed first</a></h2>
-        <div id=date>
-          <time>May 2018</time>
-        </div>
-      </li>
     
-      <li>
-        <h2><a href="https://laupow.github.io/2017/10/automating-ansible-ssh-key-setup/">Automating Ansible SSH key setup</a></h2>
-        <div id=date>
-          <time>October 2017</time>
-        </div>
-      </li>
+      <a class="basic-alignment left" href="https://laupow.github.io/2019/05/gke-v1.13-upgrade/">GKE v1.13 Upgrade &raquo;</a>
     
-      <li>
-        <h2><a href="https://laupow.github.io/2017/08/ansible-playbook-strategies/">Ansible Playbook Strategies</a></h2>
-        <div id=date>
-          <time>August 2017</time>
-        </div>
-      </li>
-    
-  </ul>
+  </div>
 </section>
 
   
 </body>
 </html>
+
 
 

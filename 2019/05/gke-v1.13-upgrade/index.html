@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-	<meta name="generator" content="Hugo 0.54.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="HandheldFriendly" content="True">
@@ -20,10 +19,10 @@
     <title>
       
       
-         DevOps in Higher Ed 
+         GKE v1.13 Upgrade 
       
     </title>
-    <link rel="canonical" href="https://laupow.github.io/">
+    <link rel="canonical" href="https://laupow.github.io/2019/05/gke-v1.13-upgrade/">
 
     <style>
   * {
@@ -388,8 +387,6 @@
 
 
     
-      <link href="https://laupow.github.io/index.xml" rel="alternate" type="application/rss+xml" title="DevOps in Higher Ed" />
-    
   </head>
 
   <body>
@@ -404,48 +401,74 @@
 
 
 <section id=content>
-  <ul class=posts_listing>
+  <h1> GKE v1.13 Upgrade </h1>
+
+  <div id=sub-header>
+    May 2019 · 1 minute read
+  </div>
+
+  <div class="entry-content">
+    <p>We recently upgraded a Kubernetes cluster to GKE v1.13.5.</p>
+
+<p>After the upgrade, the <code>docker</code> client was no longer responsive and crashed hard.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker ps
+Segmentation fault (core dumped)</code></pre></div>
+<p>Uh-oh.</p>
+
+<p>This cluster runs a Jenkins instance which launches build containers in the cluster.
+Each build container eventually runs Docker commands like
+<code>docker build -t ${env.IMAGE_NAME} -f path/to/Dockerfile .</code>
+to build container images.
+We mount the Docker client into the build container from the <a href="https://cloud.google.com/container-optimized-os/">Container-Optimized OS</a> host VM.</p>
+
+<p>A simplified Pod definition of the build container:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: build-container
+spec:
+  containers:
+    - name: build-container
+      image: <span style="font-style:italic">&#39;centos:7&#39;</span>
+      command: 
+        - sh
+        - -c 
+        - <span style="font-style:italic">&#39;&lt;build command&gt;&#39;</span>
+      volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: docker-sock
+        - mountPath: /usr/bin/docker
+          name: docker
+  volumes:
+    - name: docker
+      hostPath:
+        path: /usr/bin/docker
+        type: File
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+        type: Socket</code></pre></div>
+<p>Whether or not this should have ever worked is a fair question.
+However, it worked for the past two years, and using the mounted <code>docker</code> client broke following an upgrade to GKE v1.13.</p>
+
+<p>Our current workaround to the Docker client segmentation fault
+is to use the official <a href="https://download.docker.com/linux/static/stable/x86_64/">static Docker binaries</a> in our build container.</p>
+
+<p>There was never an issue reading or writing to the socket, and using official Docker client binaries seems to work.</p>
+
+  </div>
+
+  <div id=links>
     
-      <li>
-        <h2><a href="https://laupow.github.io/2019/05/gke-v1.13-upgrade/">GKE v1.13 Upgrade</a></h2>
-        <div id=date>
-          <time>May 2019</time>
-        </div>
-      </li>
+      <a class="basic-alignment left" href="https://laupow.github.io/2018/10/beware-of-identical-service-selectors/">&laquo; Beware of Identical Service Selectors</a>
     
-      <li>
-        <h2><a href="https://laupow.github.io/2018/10/beware-of-identical-service-selectors/">Beware of Identical Service Selectors</a></h2>
-        <div id=date>
-          <time>October 2018</time>
-        </div>
-      </li>
     
-      <li>
-        <h2><a href="https://laupow.github.io/2018/05/tls-misconfiguration-how-cloudfront-noticed-first/">TLS misconfiguration: how CloudFront noticed first</a></h2>
-        <div id=date>
-          <time>May 2018</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://laupow.github.io/2017/10/automating-ansible-ssh-key-setup/">Automating Ansible SSH key setup</a></h2>
-        <div id=date>
-          <time>October 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://laupow.github.io/2017/08/ansible-playbook-strategies/">Ansible Playbook Strategies</a></h2>
-        <div id=date>
-          <time>August 2017</time>
-        </div>
-      </li>
-    
-  </ul>
+  </div>
 </section>
 
   
 </body>
 </html>
+
 
 

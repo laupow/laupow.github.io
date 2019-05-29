@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on DevOps in Higher Ed</title>
+    <link>https://laupow.github.io/tags/docker/</link>
+    <description>Recent content in Docker on DevOps in Higher Ed</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://laupow.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GKE v1.13 Upgrade</title>
+      <link>https://laupow.github.io/2019/05/gke-v1.13-upgrade/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/2019/05/gke-v1.13-upgrade/</guid>
+      <description>We recently upgraded a Kubernetes cluster to GKE v1.13.5.
+After the upgrade, the docker client was no longer responsive and crashed hard.
+$ docker ps Segmentation fault (core dumped) Uh-oh.
+This cluster runs a Jenkins instance which launches build containers in the cluster. Each build container eventually runs Docker commands like docker build -t ${env.IMAGE_NAME} -f path/to/Dockerfile . to build container images. We mount the Docker client into the build container from the Container-Optimized OS host VM.</description>
+    </item>
+    
+  </channel>
+</rss>

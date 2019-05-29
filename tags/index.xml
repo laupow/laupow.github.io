@@ -48,11 +48,65 @@
     </item>
     
     <item>
+      <title>Docker</title>
+      <link>https://laupow.github.io/tags/docker/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gke</title>
+      <link>https://laupow.github.io/tags/gke/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/gke/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kubernetes</title>
+      <link>https://laupow.github.io/tags/kubernetes/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Labels</title>
+      <link>https://laupow.github.io/tags/labels/</link>
+      <pubDate>Mon, 08 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/labels/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Mysql</title>
       <link>https://laupow.github.io/tags/mysql/</link>
       <pubDate>Wed, 09 Aug 2017 00:00:00 +0000</pubDate>
       
       <guid>https://laupow.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Selectors</title>
+      <link>https://laupow.github.io/tags/selectors/</link>
+      <pubDate>Mon, 08 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/selectors/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Services</title>
+      <link>https://laupow.github.io/tags/services/</link>
+      <pubDate>Mon, 08 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://laupow.github.io/tags/services/</guid>
       <description></description>
     </item>
     
